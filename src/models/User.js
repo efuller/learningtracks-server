@@ -11,7 +11,8 @@ const UserSchema = new Schema({
         required: 'First Name is required!',
     },
     lastName: {
-        type: String
+        type: String,
+        default: ''
     },
     email: {
         type: String,
@@ -38,14 +39,13 @@ UserSchema.methods.generateJWT = function generateJWT() {
     return jwt.sign({
         email: this.email,
         firstName: this.firstName
-    });
+    }, process.env.JWT_SECRET);
 };
 
 UserSchema.methods.toAuthJSON = function toAuthJSON() {
     return {
         email: this.email,
         firstName: this.firstName,
-        lastName: this.lastName,
         token: this.generateJWT()
     }
 };
