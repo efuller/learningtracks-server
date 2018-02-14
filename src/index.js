@@ -1,7 +1,16 @@
 import express from 'express';
 import path from 'path';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
+
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URL);
+mongoose.connection.on('error', (err) => {
+    console.error(`Mongo Error: ${err.message}`)
+});
 
 app.use("/static", express.static(path.join(__dirname, "static")));
 
